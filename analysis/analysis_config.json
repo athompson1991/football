@@ -1,0 +1,227 @@
+{
+  "home_dir": "/Users/alex/google_drive/python_projects/football/football/",
+
+  "passing_analysis": {
+    "main_df": "data/passing.csv",
+    "target": "pass_td_now",
+    "features": [
+      "age_prev",
+      "pass_cmp_prev",
+      "pass_att_prev",
+      "pass_cmp_perc_prev",
+      "pass_yds_prev",
+      "pass_yds_per_att_prev",
+      "pass_adj_yds_per_att_prev",
+      "pass_yds_per_cmp_prev",
+      "pass_yds_per_g_prev",
+      "pass_net_yds_per_att_prev",
+      "pass_adj_net_yds_per_att_prev",
+      "pass_td_prev",
+      "pass_td_perc_prev",
+      "pass_int_prev",
+      "pass_int_perc_prev",
+      "pass_sacked_yds_prev",
+      "pass_sacked_prev"
+    ],
+    "filters": [
+      ["pass_att_prev", ">",  100],
+      ["pass_att_now", ">", 100],
+      ["pos_prev", "==", "'QB'"]
+    ],
+    "plots": {
+      "output_dir": "analysis/plots/",
+      "scatter": {
+        "x": "pass_td_prev",
+        "y": "pass_yds_now",
+        "labels": {"title": "Scatter Plot", "xlab": "Previous Season Touchdowns", "ylab": "This Season Yardage"},
+        "output_dir": "analysis/plots/pass_td.png"
+      }
+    },
+    "hypertune_params": {
+      "search_class": "RandomizedSearchCV",
+      "cv": 10,
+      "scoring": "neg_mean_squared_error"
+    },
+    "models": {
+      "support_vector_machine": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "svr": "SVR"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "svr__kernel": ["linear", "poly", "sigmoid"]
+        }
+      },
+      "random_forest_regressor": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "random_forest": "RandomForestRegressor"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2],
+          "random_forest__max_depth": [2, 3, 5]
+        }
+      },
+      "ridge": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "ridge_regression": "Ridge"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "ridge_regression__alpha": [0.1, 0.2, 0.3, 0.4, 0.5]
+        }
+      }
+    }
+  },
+
+  "receiving_analysis": {
+    "main_df": "data/receiving.csv",
+    "target": "rec_yds_now",
+
+    "features": [
+      "targets_prev",
+      "rec_prev",
+      "catch_pct_prev",
+      "rec_yds_prev",
+      "rec_yds_per_rec_prev",
+      "rec_td_prev",
+      "rec_long_prev",
+      "rec_yds_per_tgt_prev",
+      "rec_per_g_prev",
+      "rec_yds_per_g_prev",
+      "fumbles_prev"
+    ],
+    "filters": [
+      ["pos_prev", "==", "'WR'"],
+      ["pos_now", "==", "'WR'"],
+      ["gs_prev", ">=", 8],
+      ["rec_prev", ">=", 10],
+      ["targets_prev", ">", 0]
+    ]
+    ,
+    "plots": {
+      "output_dir": "analysis/plots/",
+      "scatter": {
+        "x": "rec_yds_prev",
+        "y": "rec_yds_now",
+        "labels": {"title": "Scatter Plot", "xlab": "yds", "ylab": "yds"},
+        "output_dir": "analysis/plots/rush_td.png"
+      }
+    },
+    "hypertune_params": {
+      "search_class": "RandomizedSearchCV",
+      "cv": 10,
+      "scoring": "neg_mean_squared_error"
+    },
+     "models": {
+      "support_vector_machine": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "svr": "SVR"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "svr__kernel": ["linear", "poly", "sigmoid"]
+        }
+      },
+      "random_forest_regressor": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "random_forest": "RandomForestRegressor"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2],
+          "random_forest__max_depth": [2, 3, 5]
+        }
+      },
+      "ridge": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "ridge_regression": "Ridge"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "ridge_regression__alpha": [0.1, 0.2, 0.3, 0.4, 0.5]
+        }
+      }
+    }
+  },
+
+  "rushing_analysis": {
+    "main_df": "data/rushing.csv",
+    "target": "rush_yds_now",
+    "filters": [
+      ["pos_prev", "==", "'RB'"],
+      ["gs_prev", ">=", 8],
+      ["rush_att_prev", ">=", 100]
+    ]
+    ,
+    "features": [
+      "age_prev",
+      "rush_att_prev",
+      "rush_yds_prev",
+      "rush_td_prev",
+      "rush_long_prev",
+      "rush_yds_per_att_prev",
+      "rush_yds_per_g_prev",
+      "fumbles_prev"
+    ],
+    "plots": {
+      "output_dir": "analysis/plots/",
+      "scatter": {
+        "x": "rush_yds_prev",
+        "y": "rush_yds_now",
+        "labels": {"title": "Scatter Plot", "xlab": "yds", "ylab": "yds"},
+        "output_dir": "analysis/plots/rush_td.png"
+      }
+    },
+    "models": {
+      "support_vector_machine": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "svr": "SVR"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "svr__kernel": ["linear", "poly", "sigmoid"]
+        }
+      },
+      "random_forest_regressor": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "random_forest": "RandomForestRegressor"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2],
+          "random_forest__max_depth": [2, 3, 5]
+        }
+      },
+      "ridge": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "ridge_regression": "Ridge"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "ridge_regression__alpha": [0.1, 0.2, 0.3, 0.4, 0.5]
+        }
+      }
+    },
+    "hypertune_params": {
+      "search_class": "RandomizedSearchCV",
+      "cv": 10,
+      "scoring": "neg_mean_squared_error"
+    }
+  }
+}
