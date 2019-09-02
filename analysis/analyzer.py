@@ -1,3 +1,7 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
 from football.analysis import core
 import json
 import warnings
@@ -29,6 +33,8 @@ class Analyzer(object):
         self.target = None
         self.features = None
         self.hyper_tune = None
+        self.models = {}
+        self.tuned_models = {}
 
         self.train_test = {}
 
@@ -95,6 +101,14 @@ class Analyzer(object):
         print_string = "Main DataFrame shape: " + size_strings[0] + " Rows, " + size_strings[1] + " Columns"
         print(print_string)
 
+    def set_target(self, target):
+        self.target_name = target
+        self.print_summary_analysis()
+        self.create_main_df()
+        self.split_data()
+        self.models = {}
+        self.tuned_models = {}
+
     def create_model(self, model):
         model_data = self.analysis_config['models'][model]
         pipe_names = [pipe for pipe in model_data['pipeline'].keys()]
@@ -102,8 +116,24 @@ class Analyzer(object):
         pipeline_arg = list(zip(pipe_names, pipe_objs))
         self.model = Pipeline(pipeline_arg)
 
-    def run_model(self):
-        self.model.fit(self.features, self.target)
+    def create_models(self):
+        models_data = self.analysis_config['models']
+        model_names = models_data.keys()
+        for model in model_names:
+            print("Initializing: " + model)
+            model_spec = models_data[model]
+            pipe_names = [pipe for pipe in model_spec['pipeline'].keys()]
+            pipes = [eval(model_spec['pipeline'][pipe])() for pipe in pipe_names]
+            pipeline_arg = list(zip(pipe_names, pipes))
+            self.models[model] = Pipeline(pipeline_arg)
+
+    def run_model(self, model):
+        print("Fitting: " + model)
+        self.models[model].fit(self.features, self.target)
+
+    def run_models(self):
+        for model in self.models.keys():
+            self.run_model(model)
 
     def cross_val_predict(self):
         self.predictions = cross_val_predict(
@@ -115,27 +145,32 @@ class Analyzer(object):
         score = np.sqrt(mean_squared_error(self.predictions, self.train_test['train']['target']))
         print("SVR MSE: " + str(score))
 
-    def tune_parameters(self, model):
+    def tune_model(self, model):
+        print("Tuning model: " + model)
         hypertune_params = self.analysis_config['hypertune_params']
         param_grid = self.analysis_config['models'][model]['search_params']
         search_class = eval(hypertune_params['search_class'])
-        self.hyper_tune = search_class(
-            estimator=self.model,
+        self.tuned_models[model] = search_class(
+            estimator=self.models[model],
             param_distributions=param_grid,
             cv=hypertune_params['cv'],
             scoring=hypertune_params['scoring']
         )
         print("Search class created, fitting model now...")
-        self.hyper_tune.fit(
+        self.tuned_models[model].fit(
             self.train_test['train']['features'],
             self.train_test['train']['target']
         )
 
-    def plot_learning_curve(self, filename, tuned=False):
+    def tune_models(self):
+        for model in self.models.keys():
+            self.tune_model(model)
+
+    def plot_learning_curve(self, model, filename, tuned=False):
         if tuned:
-            plot_model = self.hyper_tune.best_estimator_
+            plot_model = self.tuned_models[model].best_estimator_
         else:
-            plot_model = self.model
+            plot_model = self.models[model]
         plot_learning_curve(
             plot_model,
             self.train_test['train']['features'],
@@ -143,10 +178,22 @@ class Analyzer(object):
             output=self.config['home_dir'] + self.analysis_config['plots']['output_dir'] + filename
         )
 
-    def predict(self, features, tuned=False):
-        if tuned:
-            return self.hyper_tune.best_estimator_.predict(features)
-        else:
-            return self.model.predict(features)
+    def predict_model(self, model, features):
+        return self.models[model].predict(features)
 
+    def predict_models(self, features):
+        predictions = {}
+        for model in self.models.keys():
+            predictions[model] = self.predict_model(model, features)
+        predictions_df = pd.DataFrame.from_dict(predictions)
+        return predictions_df
 
+    def predict_tuned_model(self, model, features):
+        return self.tuned_models[model].best_estimator_.predict(features)
+
+    def predict_tuned_models(self, features):
+        predictions = {}
+        for model in self.models.keys():
+            predictions[model] = self.predict_tuned_model(model, features)
+        predictions_df = pd.DataFrame.from_dict(predictions)
+        return predictions_df

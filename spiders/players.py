@@ -30,6 +30,11 @@ class PlayerSpider(scrapy.Spider):
                 stats['pos'] = stats['pos'].upper()
             if 'catch_pct' in stats.keys():
                 stats['catch_pct'] = stats['catch_pct'].replace('%', "")
+            if 'fg_perc' in stats.keys():
+                stats['fg_perc'] = stats['fg_perc'].replace('%', "")
+            if 'fg_perc' in stats.keys():
+                stats['xp_perc'] = stats['xp_perc'].replace('%', "")
+
             return stats
         else:
             return {}

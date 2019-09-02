@@ -81,7 +81,7 @@
 
   "receiving_analysis": {
     "main_df": "data/receiving.csv",
-    "target": "rec_yds_now",
+    "target": "rec_td_now",
 
     "features": [
       "targets_prev",
@@ -155,9 +155,91 @@
     }
   },
 
+  "kicking_analysis": {
+    "main_df": "data/kicking.csv",
+    "target": "fgm_now",
+
+    "features": [
+      "age_prev",
+      "fga_prev",
+      "fgm_prev",
+      "xpa_prev",
+      "xpm_prev",
+      "xp_perc_prev",
+      "fga1_prev",
+      "fgm1_prev",
+      "fga2_prev",
+      "fgm2_prev",
+      "fga3_prev",
+      "fgm3_prev",
+      "fga4_prev",
+      "fgm4_prev",
+      "fga5_prev",
+      "fgm5_prev",
+      "fga_prev",
+      "fgm_prev",
+      "fg_perc_prev"
+    ],
+
+    "filters": [
+      ["pos_prev", "==", "'K'"],
+      ["fgm_prev", ">=", 10]
+    ]
+    ,
+    "plots": {
+      "output_dir": "analysis/plots/",
+      "scatter": {
+        "x": "rec_yds_prev",
+        "y": "rec_yds_now",
+        "labels": {"title": "Scatter Plot", "xlab": "yds", "ylab": "yds"},
+        "output_dir": "analysis/plots/rush_td.png"
+      }
+    },
+    "hypertune_params": {
+      "search_class": "RandomizedSearchCV",
+      "cv": 10,
+      "scoring": "neg_mean_squared_error"
+    },
+     "models": {
+      "support_vector_machine": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "svr": "SVR"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "svr__kernel": ["linear", "poly", "sigmoid"]
+        }
+      },
+      "random_forest_regressor": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "random_forest": "RandomForestRegressor"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2],
+          "random_forest__max_depth": [2, 3, 5]
+        }
+      },
+      "ridge": {
+        "pipeline": {
+          "scaler": "StandardScaler",
+          "poly_features": "PolynomialFeatures",
+          "ridge_regression": "Ridge"
+        },
+        "search_params": {
+          "poly_features__degree": [1, 2, 3],
+          "ridge_regression__alpha": [0.1, 0.2, 0.3, 0.4, 0.5]
+        }
+      }
+    }
+  },
+
   "rushing_analysis": {
     "main_df": "data/rushing.csv",
-    "target": "rush_yds_now",
+    "target": "rush_td_now",
     "filters": [
       ["pos_prev", "==", "'RB'"],
       ["gs_prev", ">=", 8],
