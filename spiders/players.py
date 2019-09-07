@@ -14,7 +14,6 @@ class PlayerSpider(scrapy.Spider):
         self.years = list(range(1990, 2019))
         self.urls = [FOOTBALL_REFERENCE_URL + "/years/" + str(year) + "/" + name + ".htm" for year in self.years]
 
-
     def parse_row(self, row):
         soup = bs4.BeautifulSoup(row.extract())
         tds = soup.find_all('td')
