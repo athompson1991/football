@@ -1,6 +1,6 @@
 import scrapy
 import bs4
-from ..items import PassingItem, RushingItem, ReceivingItem, DefenseItem, KickingItem, FantasyItem
+from football.scraping.items import PassingItem, RushingItem, ReceivingItem, DefenseItem, KickingItem, FantasyItem
 
 
 FOOTBALL_REFERENCE_URL = 'https://www.pro-football-reference.com'

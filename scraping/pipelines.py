@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import csv
+from .settings import CSV_OUTPUT
 
 fieldnames = {
     'passing': ['season', 'player', 'player_code', 'team', 'age', 'pos', 'g', 'gs', 'qb_rec', 'pass_cmp', 'pass_att', 'pass_cmp_perc', 'pass_yds', 'pass_td', 'pass_td_perc', 'pass_int', 'pass_int_perc', 'pass_long', 'pass_yds_per_att', 'pass_adj_yds_per_att', 'pass_yds_per_cmp', 'pass_yds_per_g', 'pass_rating', 'qbr', 'pass_sacked', 'pass_sacked_yds', 'pass_net_yds_per_att', 'pass_adj_net_yds_per_att', 'pass_sacked_perc', 'comebacks', 'gwd'],
@@ -15,7 +16,7 @@ class FootballPipeline(object):
 
     def open_spider(self, spider):
         spider_name = spider.name
-        target_dir = "data/"
+        target_dir = CSV_OUTPUT
         filename = target_dir + spider_name + ".csv"
         self.file = open(filename, 'w')
         self.writer = csv.DictWriter(

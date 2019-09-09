@@ -14,6 +14,7 @@ def predict_from_raw(main, analyzer):
     predictions['name'] = names
     return predictions
 
+
 home = "/Users/alex/google_drive/python_projects/football/football/"
 
 
@@ -33,7 +34,6 @@ passing_2018 = passing_2018[passing_2018['pass_att'] >= 10]
 passing_2018 = passing_2018[passing_2018['pass_att'] >= 10]
 
 passing_td_predictions = predict_from_raw(passing_2018, passing_analyzer)
-
 
 passing_analyzer.set_target("pass_yds_now")
 passing_analyzer.create_models()
