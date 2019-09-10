@@ -1,6 +1,6 @@
 .DS_Store
-plots/
-data/
+script/plots/
+script/data/
 
 ### Python template
 # Byte-compiled / optimized / DLL files

@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from football.analysis import core
+from . import core
+
 import json
 import warnings
 
@@ -18,7 +19,7 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 from sklearn.linear_model import Ridge
 
-from football.analysis.core import plot_learning_curve
+from .core import plot_learning_curve
 import warnings
 import numpy as np
 
@@ -39,6 +40,8 @@ class Analyzer(object):
         self.train_test = {}
 
         warnings.simplefilter(action='ignore', category=FutureWarning)
+        warnings.simplefilter(action='ignore', category=DeprecationWarning)
+        warnings.simplefilter(action='ignore', category=UserWarning)
 
         with open(config_file) as config_file:
             self.config = json.load(config_file)
