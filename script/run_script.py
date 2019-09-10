@@ -35,20 +35,25 @@ def get_ranking(yds, td, main_df, rec=None):
     return vote
 
 
+def run_all(analysis):
+    analyzer = Analyzer(config_file)
+    analyzer.set_analysis(analysis)
+    analyzer.create_main_df()
+    analyzer.filter_main()
+    analyzer.split_data()
+    analyzer.create_models()
+    analyzer.run_models()
+    analyzer.tune_models()
+    return analyzer
+
+
 if __name__ == "__main__":
 
     script_dir = home + "football/script/"
     config_file = script_dir + "analysis_config.json"
     data_dir = script_dir + "data/"
 
-    passing_analyzer = Analyzer(config_file)
-    passing_analyzer.set_analysis("passing")
-    passing_analyzer.create_main_df()
-    passing_analyzer.filter_main()
-    passing_analyzer.split_data()
-    passing_analyzer.create_models()
-    passing_analyzer.run_models()
-    passing_analyzer.tune_models()
+    passing_analyzer = run_all("passing")
 
     passing = pd.read_csv(data_dir + "passing.csv")
     passing_2018 = passing[passing['season'] == 2018]
@@ -66,14 +71,7 @@ if __name__ == "__main__":
     passing_yds_predictions = predict_from_raw(passing_2018, passing_analyzer)
 
 
-    receiving_analyzer = Analyzer(config_file)
-    receiving_analyzer.set_analysis("receiving")
-    receiving_analyzer.create_main_df()
-    receiving_analyzer.filter_main()
-    receiving_analyzer.split_data()
-    receiving_analyzer.create_models()
-    receiving_analyzer.run_models()
-    receiving_analyzer.tune_models()
+    receiving_analyzer = run_all("receiving")
 
     receiving = pd.read_csv(data_dir + "receiving.csv")
     receiving_2018 = receiving[receiving['season'] == 2018]
@@ -97,14 +95,7 @@ if __name__ == "__main__":
 
     receiving_rec_predictions = predict_from_raw(receiving_2018, receiving_analyzer)
 
-    rushing_analyzer = Analyzer(config_file)
-    rushing_analyzer.set_analysis("rushing")
-    rushing_analyzer.create_main_df()
-    rushing_analyzer.filter_main()
-    rushing_analyzer.split_data()
-    rushing_analyzer.create_models()
-    rushing_analyzer.run_models()
-    rushing_analyzer.tune_models()
+    rushing_analyzer = run_all("rushing")
 
     rushing = pd.read_csv(data_dir + "rushing.csv")
     rushing_2018 = rushing[rushing['season'] == 2018]
