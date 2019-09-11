@@ -29,12 +29,12 @@
       ["pos_prev", "==", "'QB'"]
     ],
     "plots": {
-      "output_dir": "analysis/plots/",
+      "output_dir": "plots/",
       "scatter": {
         "x": "pass_td_prev",
         "y": "pass_yds_now",
         "labels": {"title": "Scatter Plot", "xlab": "Previous Season Touchdowns", "ylab": "This Season Yardage"},
-        "output_dir": "analysis/plots/pass_td.png"
+        "filename": "passing_td_vs_yds.png"
       }
     },
     "hypertune_params": {
@@ -105,13 +105,7 @@
     ]
     ,
     "plots": {
-      "output_dir": "analysis/plots/",
-      "scatter": {
-        "x": "rec_yds_prev",
-        "y": "rec_yds_now",
-        "labels": {"title": "Scatter Plot", "xlab": "yds", "ylab": "yds"},
-        "output_dir": "analysis/plots/rush_td.png"
-      }
+      "output_dir": "plots/"
     },
     "hypertune_params": {
       "search_class": "RandomizedSearchCV",
@@ -187,13 +181,7 @@
     ]
     ,
     "plots": {
-      "output_dir": "analysis/plots/",
-      "scatter": {
-        "x": "rec_yds_prev",
-        "y": "rec_yds_now",
-        "labels": {"title": "Scatter Plot", "xlab": "yds", "ylab": "yds"},
-        "output_dir": "analysis/plots/rush_td.png"
-      }
+      "output_dir": "plots/"
     },
     "hypertune_params": {
       "search_class": "RandomizedSearchCV",
@@ -257,13 +245,7 @@
       "fumbles_prev"
     ],
     "plots": {
-      "output_dir": "analysis/plots/",
-      "scatter": {
-        "x": "rush_yds_prev",
-        "y": "rush_yds_now",
-        "labels": {"title": "Scatter Plot", "xlab": "yds", "ylab": "yds"},
-        "output_dir": "analysis/plots/rush_td.png"
-      }
+      "output_dir": "plots/"
     },
     "models": {
       "support_vector_machine": {

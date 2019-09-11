@@ -50,6 +50,11 @@ if __name__ == "__main__":
     config_file = script_dir + "analysis_config.json"
     data_dir = script_dir + "data/"
 
+    # Passing analysis
+    print("----------------------------------")
+    print("-- Running passing analysis now --")
+    print("----------------------------------")
+
     passing_analyzer = run_all("passing")
 
     passing = pd.read_csv(data_dir + "passing.csv")
@@ -67,6 +72,11 @@ if __name__ == "__main__":
 
     passing_yds_predictions = predict_from_raw(passing_2018, passing_analyzer)
 
+
+    # Receiving analysis
+    print("------------------------------------")
+    print("-- Running receiving analysis now --")
+    print("------------------------------------")
 
     receiving_analyzer = run_all("receiving")
 
@@ -92,6 +102,12 @@ if __name__ == "__main__":
 
     receiving_rec_predictions = predict_from_raw(receiving_2018, receiving_analyzer)
 
+    # Rushing analysis
+    print("----------------------------------")
+    print("-- Running rushing analysis now --")
+    print("----------------------------------")
+
+
     rushing_analyzer = run_all("rushing")
 
     rushing = pd.read_csv(data_dir + "rushing.csv")
@@ -108,6 +124,14 @@ if __name__ == "__main__":
     rushing_analyzer.tune_models()
 
     rushing_yds_predictions = predict_from_raw(rushing_2018, rushing_analyzer)
+
+
+    # Converting results into Fantasy football points
+
+
+    print("--------------------------------------")
+    print("-- Final analysis of Fantasy points --")
+    print("--------------------------------------")
 
     models = ['support_vector_machine', 'random_forest_regressor', 'ridge']
     passing_fantasy_yds = passing_yds_predictions[models].div(25)
