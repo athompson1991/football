@@ -2,6 +2,7 @@ import scrapy
 import bs4
 from football.scraping.items import PassingItem, RushingItem, ReceivingItem, DefenseItem, KickingItem, FantasyItem
 
+from ..settings import YEARS
 
 FOOTBALL_REFERENCE_URL = 'https://www.pro-football-reference.com'
 
@@ -11,7 +12,7 @@ class PlayerSpider(scrapy.Spider):
 
     def __init__(self, name):
         super().__init__()
-        self.years = list(range(1990, 2019))
+        self.years = list(YEARS)
         self.urls = [FOOTBALL_REFERENCE_URL + "/years/" + str(year) + "/" + name + ".htm" for year in self.years]
 
     def parse_row(self, row):

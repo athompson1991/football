@@ -8,8 +8,10 @@ NEWSPIDER_MODULE = 'football.scraping.spiders'
 
 ROBOTSTXT_OBEY = True
 
-CSV_OUTPUT = "/Users/alex/google_drive/python_projects/football/football/script/data/"
 
 ITEM_PIPELINES = {
    'football.scraping.pipelines.FootballPipeline': 300,
 }
+
+CSV_OUTPUT = "../script/data/"
+YEARS = range(1990, 2019)
