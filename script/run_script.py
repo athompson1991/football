@@ -1,12 +1,11 @@
 from sys import path
 
-home = "/Users/alex/google_drive/python_projects/football/"
+home = "../../"
 path.append(home)
 
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 from football.analysis.analyzer import Analyzer
 
@@ -20,7 +19,6 @@ def predict_from_raw(main, analyzer):
     predictions['name'] = names
     return predictions
 
-
 def get_ranking(yds, td, main_df, rec=None):
     vote_yds = yds.apply(np.mean, axis=1)
     vote_yds.index = main_df['player_code']
@@ -33,7 +31,6 @@ def get_ranking(yds, td, main_df, rec=None):
     else:
         vote = vote_yds + vote_td
     return vote
-
 
 def run_all(analysis):
     analyzer = Analyzer(config_file)
@@ -122,7 +119,6 @@ if __name__ == "__main__":
     rushing_fantasy_td = rushing_td_predictions[models].mul(6)
 
     receiving_fantasy_rec = receiving_rec_predictions[models]
-
 
     qb_rank = get_ranking(passing_fantasy_yds, passing_fantasy_td, passing_2018)
     wr_rank = get_ranking(receiving_fantasy_yds, receiving_fantasy_td, receiving_2018, receiving_fantasy_rec)

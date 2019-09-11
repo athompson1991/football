@@ -1,23 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.svm import SVR
 
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_val_predict, cross_val_score
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import GridSearchCV, learning_curve
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import learning_curve
 
 
 def make_main_df(filename):
     raw_data = pd.read_csv(filename)
     prev_season = raw_data.copy()
     prev_season['lookup'] = prev_season['season'] + 1
-    prev_season
-
     main = pd.merge(
         raw_data,
         prev_season,

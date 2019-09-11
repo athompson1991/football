@@ -5,23 +5,22 @@ import matplotlib.pyplot as plt
 from . import core
 
 import json
-import warnings
 
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import mean_squared_error
+
+import warnings
+import numpy as np
+
+
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.model_selection import cross_val_predict
-from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-
 from sklearn.linear_model import Ridge
 
-from .core import plot_learning_curve
-import warnings
-import numpy as np
 
 class Analyzer(object):
 
@@ -46,13 +45,10 @@ class Analyzer(object):
         with open(config_file) as config_file:
             self.config = json.load(config_file)
 
-    def set_analysis(self, analysis):
-        code = analysis + "_analysis"
-        self.analysis = analysis
-        self.analysis_config = self.config[code]
-        self.target_name = self.analysis_config["target"]
-        self.features_names = self.analysis_config["features"]
-        self.print_summary_analysis()
+    def print_main_size(self):
+        size_strings = (str(self.main.shape[0]), str(self.main.shape[1]))
+        print_string = "Main DataFrame shape: " + size_strings[0] + " Rows, " + size_strings[1] + " Columns"
+        print(print_string)
 
     def print_summary_analysis(self):
         features_string = ", ".join(self.features_names)
@@ -66,6 +62,14 @@ class Analyzer(object):
         self.target = self.main[self.target_name]
         self.features = self.main[self.features_names]
         self.print_main_size()
+
+    def set_analysis(self, analysis):
+        code = analysis + "_analysis"
+        self.analysis = analysis
+        self.analysis_config = self.config[code]
+        self.target_name = self.analysis_config["target"]
+        self.features_names = self.analysis_config["features"]
+        self.print_summary_analysis()
 
     def create_plots(self):
         plot_config = self.analysis_config["plots"]
@@ -98,11 +102,6 @@ class Analyzer(object):
             print("After logic: " + logic_string)
             self.print_main_size()
         self.create_main_df()
-
-    def print_main_size(self):
-        size_strings = (str(self.main.shape[0]), str(self.main.shape[1]))
-        print_string = "Main DataFrame shape: " + size_strings[0] + " Rows, " + size_strings[1] + " Columns"
-        print(print_string)
 
     def set_target(self, target):
         self.target_name = target
@@ -174,7 +173,7 @@ class Analyzer(object):
             plot_model = self.tuned_models[model].best_estimator_
         else:
             plot_model = self.models[model]
-        plot_learning_curve(
+        core.plot_learning_curve(
             plot_model,
             self.train_test['train']['features'],
             self.train_test['train']['target'],
