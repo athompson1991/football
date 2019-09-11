@@ -1,6 +1,6 @@
 import scrapy
 import bs4
-from football.scraping.items import PassingItem, RushingItem, ReceivingItem, DefenseItem, KickingItem, FantasyItem
+from ..items import PassingItem, RushingItem, ReceivingItem, DefenseItem, KickingItem, FantasyItem
 
 from ..settings import YEARS
 

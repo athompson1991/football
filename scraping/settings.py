@@ -3,15 +3,15 @@
 
 BOT_NAME = 'football'
 
-SPIDER_MODULES = ['football.scraping.spiders']
-NEWSPIDER_MODULE = 'football.scraping.spiders'
+SPIDER_MODULES = ['scraping.spiders']
+NEWSPIDER_MODULE = 'scraping.spiders'
 
 ROBOTSTXT_OBEY = True
 
 
 ITEM_PIPELINES = {
-   'football.scraping.pipelines.FootballPipeline': 300,
+   'scraping.pipelines.FootballPipeline': 300,
 }
 
-CSV_OUTPUT = "../script/data/"
+CSV_OUTPUT = "script/data/"
 YEARS = range(1990, 2019)
