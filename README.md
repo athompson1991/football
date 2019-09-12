@@ -12,6 +12,34 @@ I am assuming Python 3 is installed on the system, as well as Git.
 
 ### To run the code
 
+
+__TLDR__: Assuming everything works as expected, the full script _should_ be
+
+```
+cd ~
+mkdir project
+cd project
+
+python -m venv football_venv
+source football_venv/bin/activate
+
+git clone https://github.com/athompson1991/football.git
+cd football
+
+pip install -r requirements.txt
+
+mkdir script/data
+
+scrapy crawl passing
+scrapy crawl receiving
+scrapy crawl passing
+
+cd script
+python run_script.py
+```
+
+##### Step-by-Step
+
 Navigate to an empty directory.
 
 ```
@@ -70,29 +98,3 @@ That should do it! Once the script runs all the way through,
 there should be a `power_rankings.csv` file in your `script/data` directory.
 This means that the script successfully fit and tuned 21 regression models,
 then used those models to produce a power ranking.
-
-Assuming everything works as expected, the full script _should_ be
-
-```
-cd ~
-mkdir project
-cd project
-
-python -m venv football_venv
-source football_venv/bin/activate
-
-git clone https://github.com/athompson1991/football.git
-cd football
-
-pip install -r requirements.txt
-
-mkdir script/data
-
-scrapy crawl passing
-scrapy crawl receiving
-scrapy crawl passing
-
-cd script
-python run_script.py
-```
-
