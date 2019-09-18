@@ -9,6 +9,7 @@ I scrape the website https://www.pro-football-reference.com/ for this project.
 There's a massive tutorial to explain all this that I wrote located here: 
 
 http://www.kingzephyr.com/2019/09/13/fantasy-football-with-scrapy-and-scikit-learn-part-1/
+
 http://www.kingzephyr.com/2019/09/13/fantasy-football-with-scrapy-and-scikit-learn-part-2/
 
 ### Prerequisites
