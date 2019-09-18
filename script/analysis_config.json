@@ -51,7 +51,8 @@
         },
         "search_params": {
           "poly_features__degree": [1, 2, 3],
-          "svr__kernel": ["linear", "poly", "sigmoid"]
+          "svr__kernel": ["linear", "rbf", "sigmoid"],
+          "svr__epsilon": [0.5, 1, 1.5]
         }
       },
       "random_forest_regressor": {
@@ -62,7 +63,8 @@
         },
         "search_params": {
           "poly_features__degree": [1, 2],
-          "random_forest__max_depth": [2, 3, 5]
+          "random_forest__max_depth": [2, 3, 5, 1000],
+          "random_forest__min_samples_leaf": [1, 10, 20, 40, 60, 80, 100]
         }
       },
       "ridge": {

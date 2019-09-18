@@ -1,4 +1,5 @@
 from sys import path
+import os
 
 home = "../../"
 path.append(home)
@@ -49,6 +50,8 @@ if __name__ == "__main__":
     script_dir = home + "football/script/"
     config_file = script_dir + "analysis_config.json"
     data_dir = script_dir + "data/"
+
+    os.chdir(script_dir)
 
     # Passing analysis
     print("----------------------------------")

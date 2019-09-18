@@ -163,12 +163,14 @@ class Analyzer(object):
             self.train_test['train']['features'],
             self.train_test['train']['target']
         )
+        best_params = self.tuned_models[model].best_params_
+        print("Tuned model params: " + str(best_params))
 
     def tune_models(self):
         for model in self.models.keys():
             self.tune_model(model)
 
-    def plot_learning_curve(self, model, filename, tuned=False):
+    def plot_learning_curve(self, model, filename, tuned=False, **kwargs):
         if tuned:
             plot_model = self.tuned_models[model].best_estimator_
         else:
@@ -177,7 +179,8 @@ class Analyzer(object):
             plot_model,
             self.train_test['train']['features'],
             self.train_test['train']['target'],
-            output=self.config['home_dir'] + self.analysis_config['plots']['output_dir'] + filename
+            output=self.config['home_dir'] + self.analysis_config['plots']['output_dir'] + filename,
+            **kwargs
         )
 
     def predict_model(self, model, features):

@@ -28,15 +28,18 @@ def scatter_plot(main, x, y, labels_dict, output):
     plt.savefig(output)
     plt.close()
 
-def plot_learning_curve(estimator, X, y, output):
+def plot_learning_curve(estimator, X, y, output, **kwargs):
     train_sizes, train_scores, test_scores = learning_curve(
         estimator, X, y,
         train_sizes=np.linspace(0.01, 1, 20),
         scoring='neg_mean_squared_error'
     )
 
-    plt.plot(train_sizes, np.sqrt(-1 * np.mean(train_scores, axis=1)))
-    plt.plot(train_sizes, np.sqrt(-1 * np.mean(test_scores, axis=1)))
+    plt.plot(train_sizes, np.sqrt(-1 * np.mean(train_scores, axis=1)), label="In Sample")
+    plt.plot(train_sizes, np.sqrt(-1 * np.mean(test_scores, axis=1)), label="Out of Sample")
+    plt.legend(['in sample', 'out of sample'])
+    plt.title(kwargs['title'])
+    plt.xlabel("Sample Size")
     plt.show()
     plt.savefig(output)
     plt.close()

@@ -7,6 +7,7 @@ script/data/
 __pycache__/
 *.py[cod]
 *$py.class
+script/scratch.py
 
 # C extensions
 *.so
