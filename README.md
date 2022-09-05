@@ -38,7 +38,8 @@ mkdir script/data
 
 scrapy crawl passing
 scrapy crawl receiving
-scrapy crawl passing
+scrapy crawl defense
+scrapy crawl kicking
 
 cd script
 python run_script.py
